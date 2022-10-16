@@ -1,12 +1,24 @@
 <template>
-  <register-component/>
+  <div id="nav" v-if="$store.state.user">
+    <router-link to="/">Start</router-link> |
+    <button @click="$store.dispatch('logout')">Logout</button>
+  </div>
+  <router-view/>
 </template>
 
 <script>
-import RegisterComponent from "@/RegisterComponent";
+import {onBeforeMount} from 'vue';
+import {useStore} from "vuex";
+
 export default {
   name: 'App',
-  components: {RegisterComponent},
+  setup() {
+    const store = useStore()
+
+    onBeforeMount(() => {
+      store.dispatch('fetchUser')
+    })
+  }
 }
 </script>
 
