@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import router from '@/router'
 import { auth } from '@/firebase'
 import {
-    getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword
+    getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword
 } from 'firebase/auth'
 
 export default createStore({
@@ -34,6 +34,32 @@ export default createStore({
                 })
 
            await router.push('/')
+        },
+
+        async loginWithEmailAndPassword ({ commit }, payload) {
+            signInWithEmailAndPassword(getAuth(),payload.email.value, payload.password.value) // THIS LINE CHANGED
+                .then((data) => {
+                    console.log(data);
+                    console.log(commit);
+                })
+                .catch(error => {
+                    switch (error.code) {
+                        case 'auth/invalid-email':
+                            alert('Invalid email')
+                            break
+                        case 'auth/user-not-found':
+                            alert('No account with that email was found')
+                            break
+                        case 'auth/wrong-password':
+                            alert('Incorrect password')
+                            break
+                        default:
+                            alert('Email or password was incorrect')
+                            break
+                    }
+                });
+
+            await router.push('/')
         },
 
         async register ({ commit }, payload) {

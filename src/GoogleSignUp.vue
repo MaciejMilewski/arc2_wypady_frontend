@@ -1,5 +1,6 @@
 <template>
   <div v-if="!($store.state.user)">
+    <LoginComponent/>
     <button @click.prevent="googleLogin">Zaloguj się za pomocą Google</button>
     <RegisterComponent/>
   </div>
@@ -11,9 +12,10 @@
 <script >
 import {useStore, mapGetters} from 'vuex'
 import RegisterComponent from "./Register.vue";
+import LoginComponent from "./Login.vue";
 export default {
   name: 'GoogleSignUpComponent',
-  components: {RegisterComponent},
+  components: {LoginComponent, RegisterComponent},
   computed: {
     ...mapGetters({User: "StateUser"})
   },
