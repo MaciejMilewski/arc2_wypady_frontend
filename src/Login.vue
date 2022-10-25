@@ -6,18 +6,20 @@
 </template>
 
 <script>
-import {useStore} from 'vuex';
+import axios from 'axios';
 import {ref} from "vue";
 export default {
   name: "LoginComponent",
   setup() {
-    const store = useStore();
 
     const email = ref('')
     const password = ref('')
 
     function loginWithEmailAndPassword() {
-      store.dispatch('loginWithEmailAndPassword', {email: email, password: password});
+      axios.post("http://localhost:8848/register",{email: email.value, password: password.value})
+          .then((response) => {
+            console.log(response)
+          })
     }
 
     return {email, password, loginWithEmailAndPassword}
