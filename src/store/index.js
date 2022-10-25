@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import router from '@/router'
 import { auth } from '@/firebase'
 import {
-    getAuth, GoogleAuthProvider, signInWithPopup, signOut
+    getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword
 } from 'firebase/auth'
 
 export default createStore({
@@ -34,6 +34,21 @@ export default createStore({
                 })
 
            await router.push('/')
+        },
+
+        async register ({ commit }, payload) {
+            console.log(payload);
+            console.log("^ commit");
+            console.log(commit);
+            createUserWithEmailAndPassword(getAuth(),payload.email.value, payload.password.value) // need .value because ref()
+                .then((data) => {
+                    console.log(data)
+                    router.push('/') // redirect to the feed
+                })
+                .catch(error => {
+                    console.log(error.code)
+                    alert(error.message);
+                });
         },
 
         // async register ({ commit}, details) {
