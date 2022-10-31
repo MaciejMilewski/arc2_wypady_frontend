@@ -1,28 +1,29 @@
 <template>
-    <h1> Zaloguj się poprzez istniejące konto </h1>
-    <p> <input type='text' placeholder="Email" v-model='email'/> </p>
-    <p> <input type='password' placeholder="Password" v-model='password'/> </p>
-    <p> <button @click="loginWithEmailAndPassword"> Wyślij </button> </p>
+  <router-link to="/register">Zarejestruj się</router-link>
+  <h1> Zaloguj się </h1>
+  <form @submit.prevent="login">
+    <input type='email' placeholder="Email" v-model='email'/>
+    <input type='password' placeholder="Password" v-model='password'/>
+    <button type="submit"> Zaloguj się </button>
+  </form>
+
 </template>
 
 <script>
-import axios from 'axios';
+import {useStore} from 'vuex'
 import {ref} from "vue";
 export default {
   name: "LoginComponent",
   setup() {
-
+    const store = useStore();
     const email = ref('')
     const password = ref('')
 
-    function loginWithEmailAndPassword() {
-      axios.post("http://localhost:8848/register",{email: email.value, password: password.value})
-          .then((response) => {
-            console.log(response)
-          })
+    function login() {
+      store.dispatch('login',{email: email, password: password});
     }
 
-    return {email, password, loginWithEmailAndPassword}
+    return {email, password, login}
   }
 }
 </script>

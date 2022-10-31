@@ -1,24 +1,15 @@
 <template>
   <div id="nav" v-if="$store.state.user">
     <router-link to="/">Start</router-link> |
-    <button @click="$store.dispatch('logout')">Logout</button>
+    <button @click="$store.dispatch('logout')">Wyloguj</button>
   </div>
   <router-view/>
 </template>
 
 <script>
-import {onBeforeMount} from 'vue';
-import {useStore} from "vuex";
 
 export default {
   name: 'App',
-  setup() {
-    const store = useStore()
-
-    onBeforeMount(() => {
-      store.dispatch('fetchUser')
-    })
-  }
 }
 </script>
 

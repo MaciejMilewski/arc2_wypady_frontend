@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/Home'
-import { auth } from '@/firebase'
-import GoogleSignUp from "@/GoogleSignUp";
-
+import store from "../store";
+import Register from "../Register";
+import Login from "../Login";
 const routes = [
     {
         path: '/',
@@ -15,7 +15,12 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: GoogleSignUp
+        component: Login
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
     }
 ]
 
@@ -25,12 +30,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login' && auth.currentUser) {
+    if (to.path === '/login' && store.getters.StateUser) {
         next('/')
         return;
     }
 
-    if (to.matched.some(record => record.meta.requiresAuth) && !auth.currentUser) {
+    if (to.matched.some(record => record.meta.requiresAuth) && !store.getters.StateUser) {
         next('/login')
         return;
     }

@@ -1,23 +1,26 @@
 <template>
-  <h1> Stwórz konto </h1>
-  <p> <input type='text' placeholder="Email" v-model='email'/> </p>
-  <p> <input type='password' placeholder="Password" v-model='password'/> </p>
-  <p> <button @click="register"> Wyślij </button> </p>
+  <router-link to="/login">Zaloguj się</router-link>
+    <h1> Zarejestruj się </h1>
+  <form @submit.prevent="register">
+   <input type='email' placeholder="Email" v-model='email'/>
+    <input type='password' placeholder="Password" v-model='password'/>
+   <button type="submit"> Wyślij </button>
+  </form>
+
 </template>
 
 <script>
-import {useStore} from 'vuex';
+import {useStore} from 'vuex'
 import {ref} from "vue";
 export default {
   name: "RegisterComponent",
   setup() {
     const store = useStore();
-
     const email = ref('')
     const password = ref('')
 
     function register() {
-      store.dispatch('register', {email: email, password: password});
+      store.dispatch('register',{email: email, password: password});
     }
 
     return {email, password, register}
