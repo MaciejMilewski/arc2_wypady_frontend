@@ -15,22 +15,25 @@ export default {
     }
   },
   mounted() {
-    axios.get(serverURL + "/", {
-      withCredentials: true,
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      }
-    }, {
-      auth: {
-        username: this.User.email,
-        password: this.User.password
-      }
-    }).then(
-        (response) => {
-          this.backendAnswer = response.data
-          console.log(response)
-        })
+    setTimeout(()=> {
+      var username = this.User.email;
+      var password = this.User.password;
+      const token = `${username}:${password}`;
+      var basicAuth = Buffer.from(token).toString('base64')
+      axios.get(serverURL + "/", {
+        withCredentials: true,
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Basic ' + basicAuth
+        }
+      },).then(
+          (response) => {
+            this.backendAnswer = response.data
+            console.log(response)
+          })
+    }, 1000)
+
   },
   computed: {
     ...mapGetters({User: "StateUser"})

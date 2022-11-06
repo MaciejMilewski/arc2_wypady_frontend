@@ -1,6 +1,8 @@
 <template>
   <div id="nav" v-if="$store.state.user">
     <router-link to="/">Start</router-link> |
+    <router-link to="/addRestaurant">Add a new restaurant</router-link> |
+    <router-link to="/addFood">Add a new Food</router-link>
     <button @click="$store.dispatch('logout')">Wyloguj</button>
   </div>
   <router-view/>

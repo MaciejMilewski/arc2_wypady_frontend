@@ -3,6 +3,8 @@ import Home from '@/Home'
 import store from "../store";
 import Register from "../Register";
 import Login from "../Login";
+import RestaurantAdd from "../RestaurantAdd";
+import Food from "../Food";
 const routes = [
     {
         path: '/',
@@ -21,6 +23,16 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: Register
+    },
+    {
+        path: '/addRestaurant',
+        name: "Adding new Restaurant",
+        component: RestaurantAdd
+    },
+    {
+        path: '/addFood',
+        name: "Adding new Food",
+        component: Food
     }
 ]
 
@@ -30,17 +42,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login' && store.getters.StateUser) {
-        next('/')
-        return;
+    if(to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters.StateUser && to.path === "/" ) {
+            next()
+        }
+        else if(!store.getters.StateUser && to.path === "/"){
+            next('/login')
+            return
+        }
+    } else {
+        next()
     }
-
-    if (to.matched.some(record => record.meta.requiresAuth) && !store.getters.StateUser) {
-        next('/login')
-        return;
-    }
-
-    next();
 })
 
 export default router
